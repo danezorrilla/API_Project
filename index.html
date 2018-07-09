@@ -1,15 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+    <link rel="stylesheet" href="assets/css/materialize.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
+
 <body>
-    
+    <div class="center-align">
+        <img src="assets/image5082.png" class="center-align" alt="Bar Hub" height="40%" width="40%">
+    </div>
+    <div class="container">
+        <div class="row text-div">
+            <div class="input-field col s12">
+                <i class="material-icons prefix">search</i>
+                <input type="text" id="search">
+                <label for="search">Search</label>
+            </div>
+        </div>
+        <div class="row">                
+            
+            <div class="input-field col s2" id="categories">
+                <select multiple>
+                    <option value="" disabled selected>Choose your option</option>
+                    <option value="1"><i class="material-icons">local_bar</i>Bars</option>
+                    <option value="2"><i class="material-icons">whatshot</i>Clubs</option>
+                    <option value="3"><i class="material-icons">local_drink</i>Breweries</option>
+                </select>
+                <label>Categories</label>
+            </div>
+            
+            <div class="col s3 move-right" id="location">
+                <ul class="collapsible">
+                    <li>
+                        <div class="collapsible-header">Location</div>
+                        <div class="collapsible-body" id="location-collapse">
+                            <div class="input-field col s12">
+                                <select>
+                                    <option value="" disabled selected>Choose your option</option>
+                                    <option value="5">5 mi</option>
+                                    <option value="2">15 mi</option>
+                                    <option value="3">25 mi</option>
+                                    <option value="3">50 mi</option>
+                                </select>
+                                <label>Distance</label>
+                            </div>   
+                            <li class="divider" tabindex="-1"></li>
+                            <div class="switch" id="location-switch">
+                                <label>
+                                    <input type="checkbox">
+                                    <span class="lever"></span>
+                                    Use My Location
+                                </label>
+                                <!-- If lever is off, append text entry field with id = zip code -->
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+           
+            <div class="col s2 move-right" id="food">
+                <div class="switch" id="location-switch">
+                    <label>
+                        <input type="checkbox">
+                        <span class="lever"></span>
+                        Include Food Results
+                    </label>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+
+    <script> src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="</script>
+
 </body>
+
 </html>

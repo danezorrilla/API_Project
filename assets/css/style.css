@@ -9,7 +9,6 @@ body {
 
 .input-field input[type=text]:focus + label {
     color: white;
-    margin-bottom: 
 }
 
 #categories {
@@ -32,3 +31,21 @@ body {
     padding: 20px;
     background-color: white;
 }
+
+.row.center-align {
+    margin: 0 auto;
+}
+
+.fr-label {
+    position: relative;
+    left: 20px;
+}
+
+#food {
+    margin: 0px 20px 0px;
+}
+
+.switch label .lever {
+    margin: 0px 0px 0px;
+}
+

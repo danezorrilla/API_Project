@@ -13,7 +13,7 @@
 
 <body>
     <div class="center-align">
-        <img src="assets/blacknwhite.png" class="center-align" alt="Bar Hub" height="40%" width="40%">
+        <img src="assets/boozehub.png" class="center-align" alt="Bar Hub" height="40%" width="40%">
     </div>
     <div class="container">
         <div class="row text-div">
@@ -28,11 +28,11 @@
             <div class="input-field col s2" id="categories">
                 <select multiple>
                     <option value="1">
-                        <i class="material-icons">local_bar</i>Bars</option>
+                        Bars</option>
                     <option value="2">
-                        <i class="material-icons">whatshot</i>Clubs</option>
+                        Clubs</option>
                     <option value="3">
-                        <i class="material-icons">local_drink</i>Breweries</option>
+                        Breweries</option>
                 </select>
                 <label>Categories</label>
             </div>
@@ -53,11 +53,12 @@
                             </div>
                             <div class="divider" tabindex="-1"></div>
                             <div class="switch" id="location-switch">
-                                <label>
-                                    <input type="checkbox">
-                                    <span class="lever"></span>
-                                    Use My Location
-                                </label>
+                                    <label>
+                                        <input type="checkbox">
+                                        <span class="lever"></span>
+                                    </label>
+                                    <label>Use My Location</label>
+                                
                                 <!-- If lever is off, append text entry field with id = zip code -->
                             </div>
                         </div>
@@ -66,13 +67,18 @@
             </div>
 
             <div class="col s2 move-right" id="food">
-                <div class="switch col s2 move-right" id="location-switch">
-                    <label>
+                <div class="row">
+                    <div class="switch col s2 move-right" id="location-switch">
+                        <label>
                         <input type="checkbox">
                         <span class="lever"></span>
-                        Include Food Results
-                    </label>
+                        </label>
+                    </div>
+                    <div class="col s2">
+                        <label>Include Food Results</label>
+                    </div>
                 </div>
+                
             </div>
 
         </div>

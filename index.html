@@ -23,34 +23,36 @@
                 <label for="search">Search</label>
             </div>
         </div>
-        <div class="row">                
-            
+        <div class="row">
+
             <div class="input-field col s2" id="categories">
                 <select multiple>
                     <option value="" disabled selected>Choose your option</option>
-                    <option value="1"><i class="material-icons">local_bar</i>Bars</option>
-                    <option value="2"><i class="material-icons">whatshot</i>Clubs</option>
-                    <option value="3"><i class="material-icons">local_drink</i>Breweries</option>
+                    <option value="1">
+                        <i class="material-icons">local_bar</i>Bars</option>
+                    <option value="2">
+                        <i class="material-icons">whatshot</i>Clubs</option>
+                    <option value="3">
+                        <i class="material-icons">local_drink</i>Breweries</option>
                 </select>
                 <label>Categories</label>
             </div>
-            
+
             <div class="col s3 move-right" id="location">
                 <ul class="collapsible">
                     <li>
                         <div class="collapsible-header">Location</div>
                         <div class="collapsible-body" id="location-collapse">
-                            <div class="input-field col s12">
+                            <div class="input-field">
                                 <select>
-                                    <option value="" disabled selected>Choose your option</option>
                                     <option value="5">5 mi</option>
                                     <option value="2">15 mi</option>
                                     <option value="3">25 mi</option>
                                     <option value="3">50 mi</option>
                                 </select>
                                 <label>Distance</label>
-                            </div>   
-                            <li class="divider" tabindex="-1"></li>
+                            </div>
+                            <div class="divider" tabindex="-1"></li>
                             <div class="switch" id="location-switch">
                                 <label>
                                     <input type="checkbox">
@@ -63,7 +65,7 @@
                     </li>
                 </ul>
             </div>
-           
+
             <div class="col s2 move-right" id="food">
                 <div class="switch col s2 move-right" id="location-switch">
                     <label>
@@ -75,11 +77,22 @@
             </div>
 
         </div>
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
 
-    <script> src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="</script>
 
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        
+            crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+
+        <!-- <script> src="https://code.jquery.com/jquery-3.3.1.min.js"</script> -->
+
+        <script>
+            $(document).ready(function () {
+                $('select').formSelect();
+                $('.collapsible').collapsible();
+            });
+
+        </script>
 </body>
 
 </html>

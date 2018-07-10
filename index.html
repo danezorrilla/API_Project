@@ -15,9 +15,19 @@
 
         #map {
             height: 100%;
-            width: 90%;
-            margin: 0 auto;
+            width: 100%;
         }
+
+        #content {
+            height: 100%;
+            width: 100%;
+        }
+        #mapParent{
+            height:100%;
+            width:75%;
+        }
+        
+
 
         /* Optional: Makes the sample page fill the window. */
 
@@ -31,7 +41,7 @@
 </head>
 
 <body>
-    <div class="center-align">
+    <div id="header"class="center-align">
         <img src="assets/boozehub.png" class="center-align" alt="Bar Hub" height="40%" width="40%">
     </div>
     <div class="container">
@@ -40,6 +50,7 @@
                 <i class="material-icons prefix">search</i>
                 <input type="text" id="search">
                 <label for="search">Search</label>
+                <input type="submit" value="Show me venues!">
             </div>
         </div>
         <div class="row center-align">
@@ -47,11 +58,11 @@
             <div class="input-field col s2 center-align" id="categories">
                 <select multiple>
                     <option value="1">
-                        Bars</option>
+                        <span class="cats">Bars</span></option>
                     <option value="2">
-                        Clubs</option>
+                        <span class="cats">Clubs</span></option>
                     <option value="3">
-                        Breweries</option>
+                        <span class="cats">Breweries</span></option>
                 </select>
                 <label>Categories</label>
             </div>
@@ -59,24 +70,24 @@
             <div class="col s3 move-right center-align" id="location">
                 <ul class="collapsible">
                     <li>
-                        <div class="collapsible-header">Location</div>
+                        <div  style="color:white" class="collapsible-header">Location</div>
                         <div class="collapsible-body" id="location-collapse">
                             <div class="input-field">
-                                <select>
+                                <select >
                                     <option value="5">5 mi</option>
                                     <option value="2">15 mi</option>
                                     <option value="3">25 mi</option>
                                     <option value="3">50 mi</option>
                                 </select>
-                                <label>Distance</label>
+                                <label style="color:white">Distance</label>
                             </div>
                             <div class="divider" tabindex="-1"></div>
                             <div class="switch" id="location-switch">
-                                    <label>
-                                        <input type="checkbox">
-                                        <span class="lever"></span>
-                                    </label>
-                                    <label>Use My Location</label>
+                                <label onchange="turnOn()">
+                                    <input type="checkbox">
+                                    <span class="lever"></span>
+                                </label>
+                                <label style="color:white">Use My Location</label>
 
                                 <!-- If lever is off, append text entry field with id = zip code -->
                             </div>
@@ -84,9 +95,13 @@
                     </li>
                 </ul>
             </div>
+            <div class="col s4 offset-s2">
+                    <input type="text" id="autocomplete">
+                    <label for="search">City</label>
+            </div>
 
-            <div class="col s2 move-right center-align" id="food">
-                <div class="row">
+            <div class="col s4 move-right" id="food">
+                <!-- <div class="row"> -->
                     <div class="switch col s2 move-right" id="location-switch">
                         <label>
                             <input type="checkbox">
@@ -98,7 +113,7 @@
                     <div class="col s2">
                         <label class="fr-label">Include Food Results</label>
                     </div>
-                </div>
+                <!-- </div> -->
 
             </div>
 
@@ -107,7 +122,55 @@
 
     </div>
 
-    <div id="map"></div>
+    <center><div id="spinner" class="preloader-wrapper big active">
+            <div class="spinner-layer spinner-blue">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div><div class="gap-patch">
+                <div class="circle"></div>
+              </div><div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+      
+            <div class="spinner-layer spinner-red">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div><div class="gap-patch">
+                <div class="circle"></div>
+              </div><div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+      
+            <div class="spinner-layer spinner-yellow">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div><div class="gap-patch">
+                <div class="circle"></div>
+              </div><div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+      
+            <div class="spinner-layer spinner-green">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div><div class="gap-patch">
+                <div class="circle"></div>
+              </div><div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+          </div></center>
+    <div id="content" class="row">
+            <div id="venueList"class="col s3"></div>
+        <div id="mapParent"class="col s9">
+            <div id="map"></div>
+        </div>
+        
+    </div>
+
 
 
 
@@ -117,15 +180,51 @@
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
 
-    <!-- <script> src="https://code.jquery.com/jquery-3.3.1.min.js"</script> -->
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDuToiVpZ6ZupdIvTQLvUgRotodcIQF5Bc&callback=initMap">
 
     </script>
+
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDuToiVpZ6ZupdIvTQLvUgRotodcIQF5Bc&libraries=places&callback=initAutocomplete"
+async defer></script> -->
+    
     <script>
+        var placeSearch, autocomplete;
+      var componentForm = {
+        locality: 'long_name',
+      };
+
+      function initAutocomplete() {
+        // Create the autocomplete object, restricting the search to geographical
+        // location types.
+        autocomplete = new google.maps.places.Autocomplete(
+            /** @type {!HTMLInputElement} */(document.getElementById('autocomplete')),
+            {types: ['geocode']});
+
+        // When the user selects an address from the dropdown, populate the address
+        // fields in the form.
+        // autocomplete.addListener('place_changed', fillInAddress);
+      }
+
+        var gps = false;
+        function turnOn(){
+            gps = true;
+        }
         $(document).ready(function () {
             $('select').formSelect();
             $('.collapsible').collapsible();
         });
+        $("#spinner").hide();
+        $("#content").hide();
+        $("input[type='submit']").on("click", function(){
+            event.preventDefault();
+            if (gps){
+
+                geolocate();
+            }
+
+        })
+
+
     </script>
 </body>
 

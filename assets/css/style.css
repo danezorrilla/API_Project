@@ -1,7 +1,17 @@
 body {
     background-color: white;
-}
+    background-image: url("https://images.pexels.com/photos/12591/7ccb42c82fc0e75901527fa38ae48b54.jpg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+    background-size: cover;
+    background-position-y: 50%;
 
+}
+#header{
+    /* background-color: rgb(255, 101, 1); */
+    /* background-color: rgb(255, 255, 255); */
+}
+#search,#autocomplete{
+    color:white;
+}
 
 .text-div {
     margin-bottom: 0px;
@@ -9,6 +19,7 @@ body {
 
 .input-field input[type=text]:focus + label {
     color: white;
+    /* margin-bottom:  */
 }
 
 #categories {
@@ -19,7 +30,7 @@ body {
 
 #location {
     position: relative;
-    left: 45px;
+    left: 55px;
     margin: 0px 20px 0px;
 }
 
@@ -29,26 +40,44 @@ body {
 
 #location-collapse {
     padding: 20px;
-    background-color: white;
+    background-color: rgba(0,0,0, 0);
 }
-
-.row.center-align {
+p{
+    color:white;
+}
+.list{
+    background-color: rgba(85, 85, 85, 0.8);
+}
+.side{
+    color:rgb(255, 101, 1);
+    font-size: 20px;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
     margin: 0 auto;
+text-align: center;
+}
+.collapsible-header{
+    background-color: rgba(0,0,0, 0);
+    /* opacity: 0; */
+}
+option{
+color:white;
 }
 
-.fr-label {
-    position: relative;
-    left: 20px;
-}
+.dropdown-content{
+    background-color: rgba(0,0,0, 0.7);
+    width:unset !important;
 
-#food {
-    margin: 0px 20px 0px;
-}
-
-.switch label .lever {
-    margin: 0px 0px 0px;
-}
-
+<<<<<<< HEAD
 .submit-button {
     margin: 0 auto;
 }
+=======
+}
+label{
+    color:white;
+    
+}
+/* .select-dropdown{
+    width:unset !important;
+} */
+>>>>>>> 873dcb94cca8bdf01152efe8199d152695a97ca9

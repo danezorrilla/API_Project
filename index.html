@@ -53,13 +53,18 @@
                             </div>
                             <div class="divider" tabindex="-1"></div>
                             <div class="switch" id="location-switch">
-                                    <label>
-                                        <input type="checkbox">
-                                        <span class="lever"></span>
-                                    </label>
-                                    <label>Use My Location</label>
+                                <label>
+                                    <input type="checkbox">
+                                    <span class="lever"></span>
+                                </label>
+                                <label>Use My Location</label>
                                 <!-- If lever is off, append text entry field with id = zip code -->
                             </div>
+                            <div class='input-field'>
+                                <input id='Zip' type='zip' class='validate'></input>
+                                <label for='email'>Zip Code</label>
+                            </div>
+
                         </div>
                     </li>
                 </ul>
@@ -69,7 +74,7 @@
                 <div class="row">
                     <div class="switch col s2 move-right" id="location-switch">
                         <label>
-                            <input type="checkbox">
+                            <input type="checkbox" class="food-checkbox">
                             <span class="lever food-lever"></span>
                         </label>
                     </div>
@@ -77,25 +82,38 @@
                         <label class="fr-label">Include Food Results</label>
                     </div>
                 </div>
-                
+
             </div>
 
+        </div>
+        <div class="row center-align">
+            <div class="col s3 submit-button">
+                <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+                    <i class="material-icons right">send</i>
+                </button>
+
+            </div>
         </div>
 
 
         <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-        
             crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
 
         <!-- <script> src="https://code.jquery.com/jquery-3.3.1.min.js"</script> -->
 
         <script>
+            var foodSlideCheck = $(".food-checkbox")
             $(document).ready(function () {
                 $('select').formSelect();
                 $('.collapsible').collapsible();
+                foodSlideCheck.checked === true
             });
-
+            if ($(foodSlideCheck).is(":checked")) 
+            {
+                $("#location-collapse").append("<p>hello</p>")
+            }
+            console.log(foodSlideCheck.prop('checked'))
         </script>
 </body>
 

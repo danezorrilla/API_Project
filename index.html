@@ -42,9 +42,9 @@
                 <label for="search">Search</label>
             </div>
         </div>
-        <div class="row">
+        <div class="row center-align">
 
-            <div class="input-field col s2" id="categories">
+            <div class="input-field col s2 center-align" id="categories">
                 <select multiple>
                     <option value="1">
                         Bars</option>
@@ -56,7 +56,7 @@
                 <label>Categories</label>
             </div>
 
-            <div class="col s3 move-right" id="location">
+            <div class="col s3 move-right center-align" id="location">
                 <ul class="collapsible">
                     <li>
                         <div class="collapsible-header">Location</div>
@@ -72,11 +72,11 @@
                             </div>
                             <div class="divider" tabindex="-1"></div>
                             <div class="switch" id="location-switch">
-                                <label>
-                                    <input type="checkbox">
-                                    <span class="lever"></span>
-                                </label>
-                                <label>Use My Location</label>
+                                    <label>
+                                        <input type="checkbox">
+                                        <span class="lever"></span>
+                                    </label>
+                                    <label>Use My Location</label>
 
                                 <!-- If lever is off, append text entry field with id = zip code -->
                             </div>
@@ -85,16 +85,18 @@
                 </ul>
             </div>
 
-            <div class="col s2 move-right" id="food">
+            <div class="col s2 move-right center-align" id="food">
                 <div class="row">
                     <div class="switch col s2 move-right" id="location-switch">
                         <label>
                             <input type="checkbox">
-                            <span class="lever"></span>
+
+                            <span class="lever food-lever"></span>
+
                         </label>
                     </div>
                     <div class="col s2">
-                        <label>Include Food Results</label>
+                        <label class="fr-label">Include Food Results</label>
                     </div>
                 </div>
 

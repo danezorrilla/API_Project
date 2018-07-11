@@ -220,6 +220,9 @@ async defer></script> -->
         $("#content").hide();
 
         $("#venues").on("click", function () {
+            $("#venueList").empty();
+            clearOverlays();
+            clearVenues();
             event.preventDefault();
             if (gps) {
                 geolocate();

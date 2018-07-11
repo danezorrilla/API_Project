@@ -65,6 +65,7 @@ function geolocate() {
     }
 }
 function citylocate() {
+
     console.log(map);
     
     $("#spinner").show(0).delay(3000).hide(0);
@@ -128,6 +129,7 @@ var latArr = [];
 var lngArr = [];
 var coordinatesArr = [];
 var parkingMarkers = [];
+var venueMarkerArr = [];
 
 
 function gatherVenues() {
@@ -308,6 +310,7 @@ function plotVenues() {
             position: myLatLng,
             map: map
         });
+        venueMarkerArr.push(venueMarker);
 
         contentString = "<a target='_blank' href=http://www.google.com/search?q=" + nameArr[k].replace(/ /g, "+") + ">" + nameArr[k] + "</a>" + "<br>" + addressArr[k] + "<br>" + cityArr[k];
         var infowindows = new google.maps.InfoWindow();
@@ -323,6 +326,17 @@ function plotVenues() {
     map.setZoom(14);
 
 
+}
+function clearVenues() {
+    for (var e = 0; e< venueMarkerArr.length; e++) {
+        venueMarkerArr[e].setMap(null);
+    }
+    venueMarkerArr.length = 0;
+    venueMarkerArr = [];
+    NameArr = [];
+    AddressArr = [];
+    latArr = [];
+    lngArr = [];
 }
 function clearOverlays() {
     for (var d = 0; d < parkingMarkers.length; d++) {

@@ -54,7 +54,6 @@ function geolocate(){
         });
     } else {
         // Browser doesn't support Geolocation
-        //Get city from text-box
         handleLocationError(false, infoWindow, map.getCenter());
     }
 }

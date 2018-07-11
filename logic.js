@@ -60,6 +60,7 @@ function geolocate() {
         });
     } else {
         // Browser doesn't support Geolocation
+        //Get city from text-box
         handleLocationError(false, infoWindow, map.getCenter());
     }
 }
@@ -207,7 +208,7 @@ function gatherVenueLoc() {
         var results = res.response.groups[0].items;
         for (var x = 0; x < results.length; x++) {
             var venueDiv = $('<div class="list">');
-            var p = $("<p><strong><a class='side'target='_blank' href=http://www.google.com/search?q=" + results[x].venue.name.replace(/ /g, "+") + ">" + results[x].venue.name + "</a></strong>" + "<br>" + results[x].venue.location.formattedAddress[0] + "<br>" + results[x].venue.location.formattedAddress[1] + "</p>");
+            var p = $("<p id='result" + x + "'><strong><a class='side'target='_blank' href=http://www.google.com/search?q=" + results[x].venue.name.replace(/ /g, "+") + ">" + results[x].venue.name + "</a></strong>" + "<br>" + results[x].venue.location.formattedAddress[0] + "<br>" + results[x].venue.location.formattedAddress[1] + "</p>");
             var lat = results[x].venue.location.lat;
             latArr.push(lat);
             var long = results[x].venue.location.lng;

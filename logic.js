@@ -64,6 +64,52 @@ function geolocate() {
         handleLocationError(false, infoWindow, map.getCenter());
     }
 }
+function citylocate() {
+
+    console.log(map);
+    
+    $("#spinner").show(0).delay(3000).hide(0);
+    var city = "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDuToiVpZ6ZupdIvTQLvUgRotodcIQF5Bc&"
+
+
+
+    city += $.param({
+        'address': $("#autocomplete").val().trim()
+    });
+
+
+    $.ajax({
+        url: city,
+        method: 'GET',
+
+    }).done(function (response) {
+        var citypos = {
+            lat: 0,
+            lng: 0
+        };
+        citypos.lat = response.results[0].geometry.location.lat;
+        citypos.lng = response.results[0].geometry.location.lng;
+        console.log(citypos);
+
+        var marker = new google.maps.Marker({
+            position: citypos,
+            map: map,
+            icon: {
+                path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+                scale: 7
+            },
+        });    
+        ll = citypos.lat.toFixed(3) + "," + citypos.lng.toFixed(3);
+        
+        map.setCenter(citypos);
+    
+        gatherVenueLoc();
+
+        $("#content").show(3000);
+    });
+}
+
+
 
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
     infoWindow.setPosition(pos);
@@ -82,7 +128,8 @@ var cityArr = [];
 var latArr = [];
 var lngArr = [];
 var coordinatesArr = [];
-var parkingMarkers=[];
+var parkingMarkers = [];
+var venueMarkerArr = [];
 
 
 function gatherVenues() {
@@ -153,8 +200,10 @@ function gatherVenueLoc() {
 
     queryURL = url + Client_Id + '&client_secret=' + Client_Secret + '&ll=' + ll + '&query=' + q + '&v=' + v;
 
+    var corsAnywhere = "https://cors-anywhere.herokuapp.com/";
+
     $.ajax({
-        url: queryURL,
+        url: corsAnywhere + queryURL,
         method: 'GET'
     }).then(function (res) {
         console.log(res);
@@ -189,10 +238,10 @@ function gatherVenueLoc() {
             clearOverlays();
             var num = $(this).attr("data-id");
             console.log(num);
-            for (let z = 0; z<results.length;z++){
-                if (num == z){
+            for (let z = 0; z < results.length; z++) {
+                if (num == z) {
                     gatherParking(coordinatesArr[z]);
-                    
+
                 }
             }
         })
@@ -208,7 +257,7 @@ function gatherVenueLoc() {
     // }
 }
 
-function gatherYelp(){
+function gatherYelp() {
     var yelpAjax = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?rankby=distance&type=parking&key=AIzaSyDuToiVpZ6ZupdIvTQLvUgRotodcIQF5Bc&";
 
     yelpAjax += $.param({
@@ -242,7 +291,7 @@ function gatherYelp(){
 //     for (let z = 0; z<results.length;z++){
 //         if (num == z){
 //             gatherParking(coordinatesArr[z]);
-            
+
 //         }
 //     }
 // })
@@ -261,6 +310,7 @@ function plotVenues() {
             position: myLatLng,
             map: map
         });
+        venueMarkerArr.push(venueMarker);
 
         contentString = "<a target='_blank' href=http://www.google.com/search?q=" + nameArr[k].replace(/ /g, "+") + ">" + nameArr[k] + "</a>" + "<br>" + addressArr[k] + "<br>" + cityArr[k];
         var infowindows = new google.maps.InfoWindow();
@@ -277,9 +327,20 @@ function plotVenues() {
 
 
 }
+function clearVenues() {
+    for (var e = 0; e< venueMarkerArr.length; e++) {
+        venueMarkerArr[e].setMap(null);
+    }
+    venueMarkerArr.length = 0;
+    venueMarkerArr = [];
+    NameArr = [];
+    AddressArr = [];
+    latArr = [];
+    lngArr = [];
+}
 function clearOverlays() {
-    for (var d = 0; d < parkingMarkers.length; d++ ) {
-      parkingMarkers[d].setMap(null);
+    for (var d = 0; d < parkingMarkers.length; d++) {
+        parkingMarkers[d].setMap(null);
     }
     parkingMarkers.length = 0;
     parkingMarkers = [];
@@ -287,7 +348,7 @@ function clearOverlays() {
     pAddressArr = [];
     pLatArr = [];
     pLngArr = [];
-  }
+}
 
 function plotParking() {
     var parkingMarker;
@@ -331,7 +392,7 @@ function plotParking() {
     // map.setZoom(14);
     console.log(parkingMarkers);
 
-    
+
 }
 
 var pNameArr = [];
@@ -354,7 +415,7 @@ function gatherParking(coordinates) {
 
     }).done(function (response) {
         console.log(response.results.length)
-        for (var n = 0; n < response.results.length; n++) {
+        for (var n = 0; n < 5; n++) {
             // console.log(response.results[i].name);
             // console.log(response.results[i].vicinity);
             pNameArr.push(response.results[n].name);

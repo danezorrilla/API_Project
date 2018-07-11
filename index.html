@@ -204,11 +204,14 @@ async defer></script> -->
         var parking = false;
 
         function turnOn() {
-            gps = true;
+            if(!gps){
+                gps = true;
+            }
+            else{
+                gps = false;
+            }
         }
-        function includeParking() {
-            parking = true;
-        }
+        
         $(document).ready(function () {
             $('select').formSelect();
             $('.collapsible').collapsible();
@@ -217,10 +220,18 @@ async defer></script> -->
         $("#content").hide();
 
         $("#venues").on("click", function () {
+            $("#venueList").empty();
+            clearOverlays();
+            clearVenues();
             event.preventDefault();
             if (gps) {
                 geolocate();
             }
+
+            else{
+                citylocate();
+            }
+
         })
     </script>
 </body>

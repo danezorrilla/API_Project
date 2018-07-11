@@ -1,3 +1,6 @@
+
+
+
 var map; //infoWindow;
 var pos;
 var ll;
@@ -11,14 +14,14 @@ function initMap() {
     // infoWindow = new google.maps.InfoWindow;
 
     // Try HTML5 geolocation.
-    
+
 }
 // $("#location-switch").on("click", function (){
 //     geolocate();
 // });
 
 
-function geolocate(){
+function geolocate() {
     if (navigator.geolocation) {
         $("#spinner").show(0).delay(5000).hide(0);
         navigator.geolocation.getCurrentPosition(function (position) {
@@ -42,6 +45,9 @@ function geolocate(){
             map.setCenter(pos);
 
             gatherVenueLoc();
+            // if (parking) {
+            //     gatherParking();
+            // }
             $("#content").show(3000);
 
 
@@ -71,9 +77,11 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 
 var nameArr = [];
 var addressArr = [];
-var cityArr=[];
+var cityArr = [];
 var latArr = [];
 var lngArr = [];
+var coordinatesArr = [];
+var parkingMarkers=[];
 
 
 function gatherVenues() {
@@ -158,25 +166,85 @@ function gatherVenueLoc() {
             var long = results[x].venue.location.lng;
             lngArr.push(long);
             venueDiv.append(p);
+            var newButton = $("<button>").text("Show nearby parking");
+            newButton.addClass("parking");
+            newButton.attr("data-id", x);
+            venueDiv.append(newButton);
+            // var yelp = $("<a class='yelpPage' target='_blank' href=" + yelpUrl + "> Yelp Page</a>");
+            var yelpButton = $("<button class='yelp'>Yelp Page</button>");
+            venueDiv.append(yelpButton);
             $('#venueList').append(venueDiv);
             nameArr.push(results[x].venue.name);
             addressArr.push(results[x].venue.location.formattedAddress[0]);
             cityArr.push(results[x].venue.location.formattedAddress[1]);
+            var venueCoordinates = lat.toFixed(3) + "," + long.toFixed(3);
+            coordinatesArr.push(venueCoordinates);
 
         }
         console.log(latArr);
         console.log(lngArr);
         plotVenues();
+        $(document).on("click", ".parking", function () {
+            clearOverlays();
+            var num = $(this).attr("data-id");
+            console.log(num);
+            for (let z = 0; z<results.length;z++){
+                if (num == z){
+                    gatherParking(coordinatesArr[z]);
+                    
+                }
+            }
+        })
+        $(document).on("click", ".yelp", function (yelpUrl) {
+            function openInNewTab(url) {
+                $("<a>").attr("href", url).attr("target", "_blank")[0].click();
+            }
+        })
 
     });
-
-
-
-
 
     //     });
     // }
 }
+
+function gatherYelp(){
+    var yelpAjax = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?rankby=distance&type=parking&key=AIzaSyDuToiVpZ6ZupdIvTQLvUgRotodcIQF5Bc&";
+
+    yelpAjax += $.param({
+        'location': coordinates
+    });
+
+    $.ajax({
+        url: corsAnywhere + nearbyParking,
+        method: 'GET',
+
+    }).done(function (response) {
+        console.log(response.results.length)
+        for (var n = 0; n < response.results.length; n++) {
+            // console.log(response.results[i].name);
+            // console.log(response.results[i].vicinity);
+            pNameArr.push(response.results[n].name);
+            pAddressArr.push(response.results[n].vicinity);
+
+
+        }
+        gatherParkingLoc();
+        console.log(pNameArr);
+        console.log(pAddressArr);
+        console.log(response);
+    });
+}
+// $(document).on("click", "button", function () {
+//     alert("Hi");
+//     var num = $(this).attr("data-id");
+//     console.log(num);
+//     for (let z = 0; z<results.length;z++){
+//         if (num == z){
+//             gatherParking(coordinatesArr[z]);
+            
+//         }
+//     }
+// })
 
 
 function plotVenues() {
@@ -192,21 +260,144 @@ function plotVenues() {
             position: myLatLng,
             map: map
         });
+
         contentString = "<a target='_blank' href=http://www.google.com/search?q=" + nameArr[k].replace(/ /g, "+") + ">" + nameArr[k] + "</a>" + "<br>" + addressArr[k] + "<br>" + cityArr[k];
         var infowindows = new google.maps.InfoWindow();
         google.maps.event.addListener(venueMarker, 'click', (function (venueMarker, contentString, infowindows) {
             return function () {
+                map.setCenter(venueMarker.getPosition());
                 infowindows.setContent(contentString);
                 infowindows.open(map, venueMarker);
             };
         })(venueMarker, contentString, infowindows));
 
     }
-    map.setZoom(15);
+    map.setZoom(14);
 
 
 }
+function clearOverlays() {
+    for (var d = 0; d < parkingMarkers.length; d++ ) {
+      parkingMarkers[d].setMap(null);
+    }
+    parkingMarkers.length = 0;
+    parkingMarkers = [];
+    pNameArr = [];
+    pAddressArr = [];
+    pLatArr = [];
+    pLngArr = [];
+  }
 
+function plotParking() {
+    var parkingMarker;
+    var parkingString;
+    var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
+    var icons = {
+        parking: {
+            icon: iconBase + 'parking_lot_maps.png'
+        }
+    };
+    var pLatLng = { lat: 0, lng: 0 };
+
+
+
+    for (var m = 0; m < pLatArr.length; m++) {
+
+        pLatLng.lat = pLatArr[m];
+        pLatLng.lng = pLngArr[m];
+
+
+        parkingMarker = new google.maps.Marker({
+            position: pLatLng,
+            map: map,
+            icon: icons.parking.icon
+        });
+
+        parkingMarkers.push(parkingMarker);
+
+
+        parkingString = "<a target='_blank' href=http://www.google.com/search?q=" + pNameArr[m].replace(/ /g, "+") + ">" + pNameArr[m] + "</a>" + "<br>" + pAddressArr[m];
+        var infowindows = new google.maps.InfoWindow();
+        google.maps.event.addListener(parkingMarker, 'click', (function (parkingMarker, parkingString, infowindows) {
+            return function () {
+                infowindows.setContent(parkingString);
+                infowindows.open(map, parkingMarker);
+            };
+        })(parkingMarker, parkingString, infowindows));
+
+    }
+    console.log(pLatArr)
+    // map.setZoom(14);
+    console.log(parkingMarkers);
+
+    
+}
+
+var pNameArr = [];
+var pAddressArr = [];
+var pLatArr = [];
+var pLngArr = [];
+
+
+function gatherParking(coordinates) {
+    var corsAnywhere = "https://cors-anywhere.herokuapp.com/";
+    var nearbyParking = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?rankby=distance&type=parking&key=AIzaSyDuToiVpZ6ZupdIvTQLvUgRotodcIQF5Bc&";
+
+    nearbyParking += $.param({
+        'location': coordinates
+    });
+
+    $.ajax({
+        url: corsAnywhere + nearbyParking,
+        method: 'GET',
+
+    }).done(function (response) {
+        console.log(response.results.length)
+        for (var n = 0; n < response.results.length; n++) {
+            // console.log(response.results[i].name);
+            // console.log(response.results[i].vicinity);
+            pNameArr.push(response.results[n].name);
+            pAddressArr.push(response.results[n].vicinity);
+
+
+        }
+        gatherParkingLoc();
+        console.log(pNameArr);
+        console.log(pAddressArr);
+        console.log(response);
+    });
+
+}
+
+function gatherParkingLoc() {
+    for (let j = 0; j < pAddressArr.length; j++) {
+
+        var plot = "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDuToiVpZ6ZupdIvTQLvUgRotodcIQF5Bc&"
+
+
+
+        plot += $.param({
+            'address': pAddressArr[j]
+        });
+        console.log(plot)
+
+
+        $.ajax({
+            url: plot,
+            method: 'GET',
+
+        }).done(function (response) {
+            // console.log(j);
+            // console.log(response);
+            // console.log(response.results[0]);
+            pLatArr.push(response.results[0].geometry.location.lat);
+            pLngArr.push(response.results[0].geometry.location.lng);
+            plotParking();
+
+
+        });
+    }
+}
 
 
 

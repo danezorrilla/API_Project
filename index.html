@@ -28,6 +28,20 @@
             width: 75%;
         }
 
+        #venueList {
+            height: 99%;
+        }
+
+        .parking {
+            margin-bottom: 10px;
+        }
+
+
+        #mapParent {
+            height: 100%;
+            width: 75%;
+        }
+
         /* Optional: Makes the sample page fill the window. */
 
         html,
@@ -137,7 +151,8 @@
         </div>
     </center>
     <div id="content" class="row">
-        <div id="venueList" class="col s3"></div>
+        <div id="venueList" class="col s3" style="overflow:auto;"></div>
+
         <div id="mapParent" class="col s9">
             <div id="map"></div>
         </div>
@@ -147,14 +162,18 @@
 
 
 
-    <script type="text/javascript" src="logic2.js"></script>
+
+    <script type="text/javascript" src="logic.js"></script>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
 
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDuToiVpZ6ZupdIvTQLvUgRotodcIQF5Bc&callback=initMap">
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDuToiVpZ6ZupdIvTQLvUgRotodcIQF5Bc&libraries=places&callback=initAutocomplete">
+
+
     </script>
+    <!-- &callback=initMap -->
 
     <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDuToiVpZ6ZupdIvTQLvUgRotodcIQF5Bc&libraries=places&callback=initAutocomplete"
 async defer></script> -->
@@ -164,19 +183,31 @@ async defer></script> -->
         var componentForm = {
             locality: 'long_name',
         };
+
         function initAutocomplete() {
             // Create the autocomplete object, restricting the search to geographical
             // location types.
             autocomplete = new google.maps.places.Autocomplete(
             /** @type {!HTMLInputElement} */(document.getElementById('autocomplete')),
-                { types: ['geocode'] });
+                {
+                    types: ['(cities)'],
+                    componentRestrictions: { country: "us" }
+                });
+
             // When the user selects an address from the dropdown, populate the address
             // fields in the form.
             // autocomplete.addListener('place_changed', fillInAddress);
+            initMap();
         }
+
         var gps = false;
+        var parking = false;
+
         function turnOn() {
             gps = true;
+        }
+        function includeParking() {
+            parking = true;
         }
         $(document).ready(function () {
             $('select').formSelect();
@@ -184,6 +215,7 @@ async defer></script> -->
         });
         $("#spinner").hide();
         $("#content").hide();
+
         $("#venues").on("click", function () {
             event.preventDefault();
             if (gps) {

@@ -114,7 +114,7 @@
             <div class="col s4 move-right" id="food">
                 <!-- <div class="row"> -->
                 <div class="switch col s2 move-right" id="location-switch">
-                    <label onchange="includeParking()">
+                    <label>
                         <input type="checkbox">
 
                         <span class="lever parking-lever"></span>
@@ -234,11 +234,14 @@ async defer></script> -->
         var gps = false;
         var parking = false;
         function turnOn() {
-            gps = true;
+            if(!gps){
+                gps = true;
+            }
+            else{
+                gps = false;
+            }
         }
-        function includeParking() {
-            parking = true;
-        }
+        
         $(document).ready(function () {
             $('select').formSelect();
             $('.collapsible').collapsible();
@@ -250,6 +253,10 @@ async defer></script> -->
             if (gps) {
 
                 geolocate();
+            }
+
+            else{
+                citylocate();
             }
 
         })

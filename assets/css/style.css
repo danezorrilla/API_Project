@@ -8,7 +8,13 @@ body {
 #header{
     /* background-color: rgb(255, 101, 1); */
     /* background-color: rgb(255, 255, 255); */
+    margin-bottom: 20px;
 }
+
+#result0 {
+    margin-top: 0px;
+}
+
 #search,#autocomplete{
     color:white;
 }
@@ -24,14 +30,12 @@ body {
 
 #categories {
     position: relative;
-    left: 45px;
+    left: 0px;
     margin: 0px 0px 0px;
 }
 
 #location {
     position: relative;
-    left: 55px;
-    margin: 0px 20px 0px;
 }
 
 #location-switch {
@@ -67,12 +71,16 @@ color:white;
     background-color: rgba(0,0,0, 0.7);
     width:unset !important;
 
-<<<<<<< HEAD
+
+}
+
 .submit-button {
     margin: 0 auto;
 }
-=======
+.switch label .lever {
+    margin: 0 5px;
 }
+
 label{
     color:white;
     
@@ -80,4 +88,3 @@ label{
 /* .select-dropdown{
     width:unset !important;
 } */
->>>>>>> 873dcb94cca8bdf01152efe8199d152695a97ca9

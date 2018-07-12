@@ -172,9 +172,11 @@ function gatherVenueLoc() {
         for (var x = 0; x < results.length; x++) {
             // create a div the holds the venue
             var venueDiv = $('<div class="list">');
-            // store the result of the ajax call on a paragraph tag
-            var p = $("<p id='result" + x + "'><strong><a class='side'target='_blank' href=http://www.google.com/search?q=" + results[x].venue.name.replace(/ /g, "+") + ">" + results[x].venue.name + "</a></strong>" + "<br>" + results[x].venue.location.formattedAddress[0] + "<br>" + results[x].venue.location.formattedAddress[1] + "</p>");
-            // store the latitude of the venue
+          // store the result of the ajax call on a paragraph tag 
+          var p = $("<p class='center-align' id='result" + x + "'><strong><a class='side'target='_blank' href=http://www.google.com/search?q=" + results[x].venue.name.replace(/ /g, "+") + ">" + results[x].venue.name + "</a></strong>" + "<br>" + results[x].venue.location.formattedAddress[0] + "<br>" + results[x].venue.location.formattedAddress[1] + "</p>");
+          // store the latitude of the venue
+
+
             var lat = results[x].venue.location.lat;
             // push the latitude to the latitude array
             latArr.push(lat);
@@ -184,8 +186,9 @@ function gatherVenueLoc() {
             lngArr.push(long);
             // appends the results to the venue div
             venueDiv.append(p);
-            // creates a button that will display the parking near the venue
-            var newButton = $("<button>").text("Show nearby parking");
+          // creates a button that will display the parking near the venue
+          var newButton = $("<button class='center-align waves-effect waves-light btn'>").text("Show nearby parking");
+
             newButton.addClass("parking");
             newButton.attr("data-id", x);
             venueDiv.append(newButton);

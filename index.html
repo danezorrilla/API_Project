@@ -42,6 +42,10 @@
             width: 75%;
         }
 
+        .cats {
+            color: white;
+        }
+
         /* Optional: Makes the sample page fill the window. */
 
         html,
@@ -204,14 +208,14 @@ async defer></script> -->
         var parking = false;
 
         function turnOn() {
-            if(!gps){
+            if (!gps) {
                 gps = true;
             }
-            else{
+            else {
                 gps = false;
             }
         }
-        
+
         $(document).ready(function () {
             $('select').formSelect();
             $('.collapsible').collapsible();
@@ -228,7 +232,7 @@ async defer></script> -->
                 geolocate();
             }
 
-            else{
+            else {
                 citylocate();
             }
 

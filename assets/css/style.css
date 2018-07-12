@@ -85,6 +85,11 @@ label{
     color:white;
     
 }
+
+.select-wrapper input.select-dropdown {
+    color: white;
+}
+
 /* .select-dropdown{
     width:unset !important;
 } */

@@ -141,35 +141,6 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
     infoWindow.open(map);
 }
 
-// function that gets the venues near the designated location
-function gatherVenues() {
-    var mit = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?rankby=distance&type=bar&key=AIzaSyDuToiVpZ6ZupdIvTQLvUgRotodcIQF5Bc&";
-
-    mit += $.param({
-        'location': ll
-    });
-
-    $.ajax({
-        url: mit,
-        method: 'GET',
-
-    }).done(function (response) {
-
-        for (var i = 0; i < response.results.length; i++) {
-            // console.log(response.results[i].name);
-            // console.log(response.results[i].vicinity);
-            nameArr.push(response.results[i].name);
-            addressArr.push(response.results[i].vicinity);
-
-
-        }
-        gatherVenueLoc();
-        console.log(nameArr);
-        console.log(addressArr);
-    });
-
-}
-
 // function that displays a list of venues near the location
 function gatherVenueLoc() {
     // store the client id of the Foursquare API

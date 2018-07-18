@@ -1,11 +1,38 @@
-
+// Global Varibles
 
 
 var map; //infoWindow;
 var pos;
 var ll;
 
+// array to hold the names of the venue
+var nameArr = [];
+// array to hold the address of the venue
+var addressArr = [];
+// array to hold the cities of the venue
+var cityArr = [];
+// array to hold the latitude of the venue
+var latArr = [];
+// array to hold the longitude of the venue
+var lngArr = [];
+// array to hold the coordinates of the venue
+var coordinatesArr = [];
+// array to hold the parking near the venue
+var parkingMarkers = [];
+// array to hold the markers of the venue
+var venueMarkerArr = [];
+// array to hold the names of the parking lots
+var pNameArr = [];
+// array to hold the address of the parking lots
+var pAddressArr = [];
+// array to hold the latitude of the parking lots
+var pLatArr = [];
+// array to hold the longitude of the parking lots
+var pLngArr = [];
 
+// Functions
+
+// Initialize and add the map
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         center: { lat: 34.052, lng: -118.243 },
@@ -14,6 +41,7 @@ function initMap() {
 
 }
 
+// function that gets the geographic location of a user or computer device
 function geolocate() {
     if (navigator.geolocation) {
         $("#spinner").show(0).delay(5000).hide(0);
@@ -57,6 +85,8 @@ function geolocate() {
         handleLocationError(false, infoWindow, map.getCenter());
     }
 }
+
+// locates the city the user enters 
 function citylocate() {
 
     console.log(map);
@@ -102,8 +132,7 @@ function citylocate() {
     });
 }
 
-
-
+// function that handles any location errors
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
     infoWindow.setPosition(pos);
     infoWindow.setContent(browserHasGeolocation ?
@@ -112,64 +141,18 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
     infoWindow.open(map);
 }
 
-
-
-
-var nameArr = [];
-var addressArr = [];
-var cityArr = [];
-var latArr = [];
-var lngArr = [];
-var coordinatesArr = [];
-var parkingMarkers = [];
-var venueMarkerArr = [];
-
-var pNameArr = [];
-var pAddressArr = [];
-var pLatArr = [];
-var pLngArr = [];
-
-
-
-function gatherVenues() {
-    var mit = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?rankby=distance&type=bar&key=AIzaSyDuToiVpZ6ZupdIvTQLvUgRotodcIQF5Bc&";
-
-    mit += $.param({
-        'location': ll
-    });
-
-    $.ajax({
-        url: mit,
-        method: 'GET',
-
-    }).done(function (response) {
-
-        for (var i = 0; i < response.results.length; i++) {
-            // console.log(response.results[i].name);
-            // console.log(response.results[i].vicinity);
-            nameArr.push(response.results[i].name);
-            addressArr.push(response.results[i].vicinity);
-
-
-        }
-        gatherVenueLoc();
-        console.log(nameArr);
-        console.log(addressArr);
-    });
-
-}
-
+// function that displays a list of venues near the location
 function gatherVenueLoc() {
+    // store the client id of the Foursquare API
     var Client_Id = 'J1PHCGTIASTA4VYZJWDPBO1QRVPUAFGKTDHAN3JU0L1CPACB';
 
+    // store the client key of the Foursquare API
     var Client_Secret = 'SKCVKYSDF052NOZZESTDU1SUXF4GO1CJDBK045V4JBG33OF2';
 
+    // store the url of the expolre endpoint in the Foursquare API
     var url = 'https://api.foursquare.com/v2/venues/explore?limit=10&client_id=';
 
-    var lc = '40.7,-74';
-
-    var q = 'bar';
-
+    // stores the latest version of the Foursquare API, 
     var v = '20180706';
 
     var queryURL;
@@ -177,6 +160,7 @@ function gatherVenueLoc() {
 
     queryURL = url + Client_Id + '&client_secret=' + Client_Secret + '&ll=' + ll + '&query=' + q + '&v=' + v;
 
+    // bypass CORS
     var corsAnywhere = "https://cors-anywhere.herokuapp.com/";
 
     $.ajax({
@@ -186,29 +170,46 @@ function gatherVenueLoc() {
         console.log(res);
         var results = res.response.groups[0].items;
         for (var x = 0; x < results.length; x++) {
+            // create a div the holds the venue
             var venueDiv = $('<div class="list">');
-            var p = $("<p id='result" + x + "'><strong><a class='side'target='_blank' href=http://www.google.com/search?q=" + results[x].venue.name.replace(/ /g, "+") + ">" + results[x].venue.name + "</a></strong>" + "<br>" + results[x].venue.location.formattedAddress[0] + "<br>" + results[x].venue.location.formattedAddress[1] + "</p>");
+          // store the result of the ajax call on a paragraph tag 
+          var p = $("<p class='center-align' id='result" + x + "'><strong><a class='side'target='_blank' href=http://www.google.com/search?q=" + results[x].venue.name.replace(/ /g, "+") + ">" + results[x].venue.name + "</a></strong>" + "<br>" + results[x].venue.location.formattedAddress[0] + "<br>" + results[x].venue.location.formattedAddress[1] + "</p>");
+          // store the latitude of the venue
+
+
             var lat = results[x].venue.location.lat;
+            // push the latitude to the latitude array
             latArr.push(lat);
+            // store the longitude of the venue
             var long = results[x].venue.location.lng;
+            // push the longitude to the longitude of the venue
             lngArr.push(long);
+            // appends the results to the venue div
             venueDiv.append(p);
-            var newButton = $("<button>").text("Show nearby parking");
+          // creates a button that will display the parking near the venue
+          var newButton = $("<button class='center-align waves-effect waves-light btn'>").text("Show nearby parking");
+
             newButton.addClass("parking");
             newButton.attr("data-id", x);
             venueDiv.append(newButton);
             // var yelp = $("<a class='yelpPage' target='_blank' href=" + yelpUrl + "> Yelp Page</a>");
             $('#venueList').append(venueDiv);
+            // push the name of the venue in the name array
             nameArr.push(results[x].venue.name);
+            // push the address of the venue in the address array
             addressArr.push(results[x].venue.location.formattedAddress[0]);
+            // push the city of the venue in the city array
             cityArr.push(results[x].venue.location.formattedAddress[1]);
+            // stores the venues latitude and longitude coordinates
             var venueCoordinates = lat.toFixed(3) + "," + long.toFixed(3);
+            // push the coordinates to the corrdinates array
             coordinatesArr.push(venueCoordinates);
 
         }
         console.log(latArr);
         console.log(lngArr);
         plotVenues();
+        // gets rid of the parking icon when the show nearby parking button is clicking
         $(document).on("click", ".parking", function () {
             clearOverlays();
             var num = $(this).attr("data-id");
@@ -224,7 +225,7 @@ function gatherVenueLoc() {
 
 }
 
-
+// function that plots the venues on the map
 function plotVenues() {
     var venueMarker;
     var contentString;
@@ -255,6 +256,8 @@ function plotVenues() {
 
 
 }
+
+// clears the markers on the map
 function clearVenues() {
     for (var e = 0; e< venueMarkerArr.length; e++) {
         venueMarkerArr[e].setMap(null);
@@ -268,6 +271,8 @@ function clearVenues() {
     cityArr = [];
     coordinatesArr = [];
 }
+
+// clears the parking of the previous venue
 function clearOverlays() {
     for (var d = 0; d < parkingMarkers.length; d++) {
         parkingMarkers[d].setMap(null);
@@ -280,6 +285,7 @@ function clearOverlays() {
     pLngArr = [];
 }
 
+// display parking near a venue
 function plotParking() {
     var parkingMarker;
     var parkingString;
@@ -325,8 +331,7 @@ function plotParking() {
 
 }
 
-
-
+// function that gets the parking near a venue using Google Places API
 function gatherParking(coordinates) {
     var corsAnywhere = "https://cors-anywhere.herokuapp.com/";
     var nearbyParking = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?rankby=distance&type=parking&key=AIzaSyDuToiVpZ6ZupdIvTQLvUgRotodcIQF5Bc&";
@@ -357,12 +362,11 @@ function gatherParking(coordinates) {
 
 }
 
+// function the gets the parking lots location near a venue using Google Maps API
 function gatherParkingLoc() {
     for (let j = 0; j < pAddressArr.length; j++) {
 
         var plot = "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDuToiVpZ6ZupdIvTQLvUgRotodcIQF5Bc&"
-
-
 
         plot += $.param({
             'address': pAddressArr[j]

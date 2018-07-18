@@ -17,6 +17,7 @@ body {
 
 #search,#autocomplete{
     color:white;
+    text-align: center;
 }
 
 .text-div {
@@ -82,9 +83,11 @@ text-align: center;
 label{
     color:white;
 }
-select option[selected] {
-    font-style: italic;
-    font-weight: bold;
-    background-color: red;
-    color: green;
-  }
+
+.select-wrapper input.select-dropdown {
+    color: white;
+}
+
+/* .select-dropdown{
+    width:unset !important;
+} */

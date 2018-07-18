@@ -334,6 +334,7 @@ function plotParking() {
         parkingMarker = new google.maps.Marker({
             position: pLatLng,
             map: map,
+            animation: google.maps.Animation.DROP,
             icon: icons.parking.icon
         });
 

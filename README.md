@@ -17,3 +17,4 @@ Materalize, FourSquare API, Google Maps API (Geolocation and Google Places)
 <br>
 Authors:<br>
 Brad Na, Jack Sullivan, Daniel Zorrilla, Alec Inthalangsy, Dhrumil Patel
+

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/materialize.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+                 * element that contains the map. */
+
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+
+        #content {
+            height: 100%;
+            width: 100%;
+        }
+
+        #mapParent {
+            height: 100%;
+            width: 75%;
+        }
+
+        #venueList {
+            height: 99%;
+        }
+
+        .parking {
+            margin-bottom: 10px;
+        }
+
+
+        #mapParent {
+            height: 100%;
+            width: 75%;
+        }
+
+        .cats {
+            color: white;
+        }
+
+        /* Optional: Makes the sample page fill the window. */
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header" class="center-align">
+        <img src="assets/boozehubblack.png" class="center-align" alt="Bar Hub" height="40%" width="40%">
+    </div>
+    <div class="container">
+        <div class="row center-align">
+
+            <div class="left input-field col s4 center-align" id="categories">
+                <select>
+                    <option value="1">
+                        <span class="cats">Bars</span>
+                    </option>
+                    <option value="2">
+                        <span class="cats">Clubs</span>
+                    </option>
+                    <option value="3">
+                        <span class="cats">Breweries</span>
+                    </option>
+                </select>
+                <label>Categories</label>
+            </div>
+
+            <div class="col s4 move-right center-align" id="location">
+                <div class="switch" id="location-switch">
+                    <label onchange="turnOn()">
+                        <input type="checkbox">
+                        <span class="lever"></span>
+                        Use My Location
+                    </label>
+                    <!-- If lever is off, append text entry field with id = zip code -->
+                </div>
+            </div>
+            <div class="right col s4 ">
+                <input type="text" id="autocomplete">
+                <label for="search">City</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 center-align">
+                <button id="venues" class="btn waves-effect waves-light col s12" type="submit" name="action">Show me Venues
+                    <i class="material-icons right">add_location</i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <center>
+        <div id="spinner" class="preloader-wrapper big active">
+            <div class="spinner-layer spinner-blue">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+
+            <div class="spinner-layer spinner-red">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+
+            <div class="spinner-layer spinner-yellow">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+
+            <div class="spinner-layer spinner-green">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+        </div>
+    </center>
+    <div id="content" class="row">
+        <div id="venueList" class="col s3" style="overflow:auto;"></div>
+
+        <div id="mapParent" class="col s9">
+            <div id="map"></div>
+        </div>
+
+    </div>
+
+
+
+
+
+    <script type="text/javascript" src="test_logic.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6MpLf9jjhgCPBWJcpnqmIu2cZ21fsS8g&libraries=places&callback=initAutocomplete">
+
+
+    </script>
+    <!-- &callback=initMap -->
+
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDuToiVpZ6ZupdIvTQLvUgRotodcIQF5Bc&libraries=places&callback=initAutocomplete"
+async defer></script> -->
+
+    <script>
+        var placeSearch, autocomplete;
+        var componentForm = {
+            locality: 'long_name',
+        };
+
+        function initAutocomplete() {
+            // Create the autocomplete object, restricting the search to geographical
+            // location types.
+            autocomplete = new google.maps.places.Autocomplete(
+            /** @type {!HTMLInputElement} */(document.getElementById('autocomplete')),
+                {
+                    types: ['(cities)'],
+                    componentRestrictions: { country: "us" }
+                });
+
+            // When the user selects an address from the dropdown, populate the address
+            // fields in the form.
+            // autocomplete.addListener('place_changed', fillInAddress);
+            initMap();
+        }
+
+        var gps = false;
+        var parking = false;
+
+        function turnOn() {
+            if (!gps) {
+                gps = true;
+            }
+            else {
+                gps = false;
+            }
+        }
+
+        $(document).ready(function () {
+            $('select').formSelect();
+            $('.collapsible').collapsible();
+        });
+        $("#spinner").hide();
+        $("#content").hide();
+
+        $("#venues").on("click", function () {
+            $("#venueList").empty();
+            clearOverlays();
+            clearVenues();
+            event.preventDefault();
+            if (gps) {
+                geolocate();
+            }
+
+            else {
+                citylocate();
+            }
+
+        })
+    </script>
+</body>
+
+</html>

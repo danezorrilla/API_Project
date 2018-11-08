@@ -16,5 +16,5 @@ Built with:<br>
 Materalize, FourSquare API, Google Maps API (Geolocation and Google Places)
 <br>
 Authors:<br>
-Brad Na, Jack Sullivan, Daniel Zorrilla, Alec Inthalangsy, Dhrumil Patel
+Brad Na, Jack Sullivan, Daniel Zorrilla, Alec Inthalangsy, Daniel Kim
 
